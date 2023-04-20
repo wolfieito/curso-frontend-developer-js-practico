@@ -3,18 +3,21 @@ const desktopMenu = document.querySelector('.desktop-menu');
 const mobileMenu = document.querySelector('.mobile-menu')
 const menuOptionsIcon = document.querySelector('.menu')
 const shoppingCart = document.querySelector('.navbar-shopping-cart')
-const productDetail = document.querySelector('.product-detail')
+const shoppingCartContainer = document.querySelector('#shoppingCartContainer')
 const cardsContainter = document.querySelector('.cards-container')
+const productDetailContainer = document.querySelector('#ProductDetail')
+const productDetailClose = document.querySelector('.product-detail-close')
 
 email.addEventListener('click', toggleDesktopMenu);
 menuOptionsIcon.addEventListener('click', toggleMobileMenu);
-shoppingCart.addEventListener('click', toggleProductDetail)
+shoppingCart.addEventListener('click', toggleaside)
+productDetailClose.addEventListener('click', closeProductDetail)
 
 function toggleDesktopMenu(){
-    const isProductDetailOpen = !(productDetail.classList.contains('inactive'))
+    const isAsideOpen = !(shoppingCartContainer.classList.contains('inactive'))
 
-    if (isProductDetailOpen)
-        productDetail.classList.add('inactive')
+    if (isAsideOpen)
+        shoppingCartContainer.classList.add('inactive')
 
 
     desktopMenu.classList.toggle('inactive') //quita o agrega la clase inactive
@@ -22,28 +25,45 @@ function toggleDesktopMenu(){
 }
 
 function toggleMobileMenu(){
-    const isProductDetailOpen = !(productDetail.classList.contains('inactive'))
+    const isAsideOpen = !(shoppingCartContainer.classList.contains('inactive'))
 
-    if (isProductDetailOpen)
-        productDetail.classList.add('inactive')
+    if (isAsideOpen)
+        shoppingCartContainer.classList.add('inactive')
 
+    closeProductDetail()
 
     mobileMenu.classList.toggle('inactive') //quita o agrega la clase inactive
                                       // si la tiene la quita, si no la tiene la pone
 }
 
-function toggleProductDetail(){
+function toggleaside(){
     const isMobileMenuOpen = !(mobileMenu.classList.contains('inactive'))
     const isDesktopMenuOpen = !(desktopMenu.classList.contains('inactive'))
+    const isProductDetailOpen = !(productDetailContainer.classList.contains('inactive'))
 
     if (isDesktopMenuOpen)
         desktopMenu.classList.add('inactive')
 
-
     if (isMobileMenuOpen)
         mobileMenu.classList.add('inactive')
 
-    productDetail.classList.toggle('inactive')
+    if (isProductDetailOpen){
+        productDetailContainer.classList.add('inactive')
+    }
+
+    shoppingCartContainer.classList.toggle('inactive')
+}
+
+function openProductDetailAside(){
+    shoppingCartContainer.classList.add('inactive')
+    
+    productDetailContainer.classList.remove('inactive')
+
+}
+
+function closeProductDetail(){
+    if (!productDetailContainer.classList.contains('inactive'))
+        productDetailContainer.classList.add('inactive')
 }
 
 const productList = []
@@ -90,6 +110,7 @@ function renderProducts(arr){
     
         const imgProd = document.createElement('img')
         imgProd.setAttribute('src', product.image)
+        imgProd.addEventListener('click', openProductDetailAside)
     
         productCard.appendChild(imgProd)
         //le agregamos el elemento tipo img en el elemento div con la clase product-card
